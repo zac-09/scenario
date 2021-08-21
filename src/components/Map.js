@@ -124,7 +124,7 @@ const DnDFlow = () => {
         if (el.id === clickedElement.id) {
           // it's important that you create a new object here
           // in order to notify react flow about the change
-          console.log("the label isd", label);
+          console.log("the label isdd", label);
 
           el.data = {
             ...el.data,
