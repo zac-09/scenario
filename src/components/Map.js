@@ -4,9 +4,8 @@ import ReactFlow, {
   addEdge,
   removeElements,
   Controls,
-  
 } from "react-flow-renderer";
-import ConnectionLine from './ConnectionLine'
+import ConnectionLine from "./ConnectionLine";
 import Sidebar from "./Sidebar";
 // const edgeType = 'smoothstep';
 import "./dnd.css";
@@ -121,11 +120,13 @@ const DnDFlow = () => {
   useEffect(() => {
     setElements((els) =>
       els.map((el) => {
+      console.log('element is',els);
+
         if (el.id === clickedElement.id) {
+          console.log("element matcg", el.id, clickedElement.id);
+
           // it's important that you create a new object here
           // in order to notify react flow about the change
-          console.log("the label isdd", label);
-
           el.data = {
             ...el.data,
             label: label,
@@ -135,7 +136,11 @@ const DnDFlow = () => {
         return el;
       })
     );
-  }, [setElements, clickedElement, label]);
+    // setElements((prevstate) => {
+    //   console.log("the prev stae is", prevstate);
+    //   return []
+    // });
+  }, [setElements, clickedElement,label]);
 
   return (
     <div className="dndflow">
@@ -155,7 +160,7 @@ const DnDFlow = () => {
             onDragOver={onDragOver}
             connectionLineType="step"
             connectionLineComponent={ConnectionLine}
-            connectionLineStyle={{stroke:"red"}}
+            connectionLineStyle={{ stroke: "red" }}
             onElementClick={(event, element) => {
               console.log("the element is", element);
               if (element.target) {
@@ -167,9 +172,10 @@ const DnDFlow = () => {
                 // })
                 return;
               }
+              setClickedEment(element);
+
               setLabel(element.data.label);
 
-              setClickedEment(element);
             }}
           >
             {/* <Background variant="dots" gap={10} size={1} /> */}
