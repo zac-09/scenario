@@ -1,0 +1,30 @@
+.side-bar-container {
+  min-height: 100vh;
+  background-color: var(--color-secondary);
+color: #eee;
+  border-right: 1px solid #eee;
+  font-size: 12px;
+  padding: 15px 10px;
+  max-width: 250px;
+}
+.title{
+    font-size: 2.5rem;
+    color: var(--color-primary);
+}
+.title-container{
+    margin-bottom: 4rem;
+    margin-top: 2rem;
+    font-family: var(--font-title);
+}
+.icon{
+  height: 2.5rem;
+  width: 2.5rem;
+  fill: var(--color-grey-dark-2);
+  /* padding: 1rem; */
+  margin-right: 2rem;
+}
+.test{
+    padding: 2rem;
+    height: 4rem;
+   align-items: left;
+}

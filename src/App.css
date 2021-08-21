@@ -1,5 +1,7 @@
 .App {
   text-align: center;
+  width: 100%;
+  height: 40rem;
 }
 
 .App-logo {
@@ -28,11 +30,21 @@
   color: #61dafb;
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+:root {
+  --color-primary: #b28451;
+  --color-primary-light: #c9a985;
+  --font-title: "Overpass";
+  --color-secondary: #101d2c;
+  --color-secondary-dark: #05090d;
+  --font-display: "Signika Negative";
+
+  --color-grey-light-1: #faf9f9;
+  --color-grey-light-2: #f4f2f2;
+  --color-grey-light-3: #f0eeee;
+  --color-grey-light-4: #ccc;
+
+  --color-grey-dark-1: #333;
+  --color-grey-dark-2: #777;
+  --color-grey-dark-3: #999;
 }
+/* "Overpass"; */

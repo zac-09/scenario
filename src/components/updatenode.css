@@ -1,0 +1,36 @@
+.updatenode__controls {
+  display: flex;
+  flex-direction: column;
+  width: 15%;
+  /* height: 100vh; */
+  background-color: var(--color-primary-light);
+  position: absolute;
+  top: 30px;
+  right: 10px;
+  z-index: 5;
+  border-radius: 1.5rem;
+  padding: 1rem;
+}
+
+.label {
+  font-size: 1.4rem;
+  padding: 1rem;
+  color: var(--color-grey-light-3);
+}
+.text-input {
+  border: none;
+  line-height: 1;
+  padding: 1rem;
+  margin: 0.8rem;
+  color: var(--color-grey-dark-3);
+  border-radius: 1.4rem;
+}
+.text-input:focus {
+  outline: none;
+  border: solid 1px #ccc;
+}
+.update-title {
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+  color: var(--color-secondary);
+}
