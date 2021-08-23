@@ -1,9 +1,10 @@
-import React, { useState, useRef, useEffect } from "react";
+import React, { useState, useRef, useEffect, Fragment } from "react";
 import ReactFlow, {
   ReactFlowProvider,
   addEdge,
   removeElements,
   Controls,
+  updateEdge,
 } from "react-flow-renderer";
 import ConnectionLine from "./ConnectionLine";
 import Sidebar from "./Sidebar";
@@ -30,7 +31,8 @@ const DnDFlow = () => {
   const [elements, setElements] = useState(initialElements);
   const [clickedElement, setClickedEment] = useState({});
   const [label, setLabel] = useState(clickedElement?.data?.label);
-  const [edge, setEdge] = useState(clickedElement?.data?.label);
+  const [edgeLabel, setEdgeLabel] = useState();
+  const [clickedEdge, setclickedEdge] = useState();
   const onConnect = (params) => setElements((els) => addEdge(params, els));
   const onElementsRemove = (elementsToRemove) =>
     setElements((els) => removeElements(elementsToRemove, els));
@@ -80,7 +82,7 @@ const DnDFlow = () => {
         type: "step",
         label: "case 1",
         arrowHeadType: "arrowclosed",
-        labelStyle: { fill: "green", fontWeight: 700 },
+        labelStyle: { fill: "green", fontWeight: 700, zIndex: 2344 },
         arrowHeadColor: "#101d2c",
 
         style: { stroke: "#101d2c" },
@@ -91,7 +93,7 @@ const DnDFlow = () => {
         target: right.id,
         type: "step",
         label: "case 2",
-        labelStyle: { fill: "red", fontWeight: 700 },
+        labelStyle: { fill: "red", fontWeight: 700, zIndex: 2344 },
         style: { stroke: "#101d2c" },
         arrowHeadColor: "#101d2c",
         arrowHeadType: "arrowclosed",
@@ -114,22 +116,33 @@ const DnDFlow = () => {
     setElements((es) => es.concat(newNode));
   };
   const onEdgeUpdate = (oldEdge, newConnection) => {
-    // setElements((els) => updateEdge(oldEdge, newConnection, els));
-    console.log("updated edge", oldEdge, newConnection);
+    setElements((els) => updateEdge(oldEdge, newConnection, els));
   };
   useEffect(() => {
     setElements((els) =>
       els.map((el) => {
-      console.log('element is',els);
-
         if (el.id === clickedElement.id) {
-          console.log("element matcg", el.id, clickedElement.id);
-
-          // it's important that you create a new object here
-          // in order to notify react flow about the change
           el.data = {
             ...el.data,
             label: label,
+          };
+        }
+
+        return el;
+      })
+    );
+  }, [setElements, clickedElement, label]);
+  useEffect(() => {
+    setElements((els) =>
+      els.map((el) => {
+        if (el.id === clickedEdge?.id) {
+          console.log("element matcg", el.id, clickedEdge.id);
+
+          // it's important that you create a new object here
+          // in order to notify react flow about the change
+          el = {
+            ...el,
+            label: edgeLabel,
           };
         }
 
@@ -140,7 +153,7 @@ const DnDFlow = () => {
     //   console.log("the prev stae is", prevstate);
     //   return []
     // });
-  }, [setElements, clickedElement,label]);
+  }, [setElements, clickedEdge, edgeLabel]);
 
   return (
     <div className="dndflow">
@@ -149,6 +162,11 @@ const DnDFlow = () => {
 
         <div className="reactflow-wrapper" ref={reactFlowWrapper}>
           <ReactFlow
+            onNodeDoubleClick={(event, node) => {
+              console.log("the node is", node);
+              setElements((els) => els.filter((el) => el.id !== node.id));
+            }}
+            onEdgeUpdate={onEdgeUpdate}
             arrowHeadColor="#101d2c"
             defaultZoom={1.5}
             elements={elements}
@@ -158,24 +176,53 @@ const DnDFlow = () => {
             onDrop={onDrop}
             onEdgeUpdate={onEdgeUpdate}
             onDragOver={onDragOver}
+            onEdgeContextMenu={(event, edge) => {
+              event.preventDefault();
+              console.log(edge);
+              const lead = elements.find((el) => (el.id = edge.source));
+              console.log("the lead is", lead);
+              const newNode = {
+                id: `${getId() + "new node"}`,
+                data: { label: "Case:" },
+                // position: { x: 450, y: 200 },
+                position: {
+                  x: edge.id.includes("red")
+                    ? lead.position.x + 300
+                    : lead.position.x - 300,
+                  y: lead.position.y + 200,
+                },
+              };
+              const newCase = {
+                id: `${getId() + "red"}`,
+                source: edge.source,
+                target: newNode.id,
+
+                type: "step",
+                label: "new case",
+                labelStyle: { fill: "red", fontWeight: 700 },
+                style: { stroke: "#101d2c" },
+                arrowHeadColor: "#101d2c",
+                arrowHeadType: "arrowclosed",
+              };
+              setElements((es) => es.concat(newNode, newCase));
+            }}
             connectionLineType="step"
             connectionLineComponent={ConnectionLine}
             connectionLineStyle={{ stroke: "red" }}
             onElementClick={(event, element) => {
               console.log("the element is", element);
               if (element.target) {
-                // elements.forEach(el=>{
-                //   if (el.id = element.id){
-                //     console.log('The edge is',el.label);
-
-                //   }
-                // })
+                setclickedEdge(element);
+                elements.map((el) => {
+                  if (el.id === element.id) {
+                    setEdgeLabel(el.label);
+                  }
+                });
                 return;
               }
               setClickedEment(element);
 
               setLabel(element.data.label);
-
             }}
           >
             {/* <Background variant="dots" gap={10} size={1} /> */}
@@ -193,6 +240,18 @@ const DnDFlow = () => {
               }}
               className="text-input"
             />
+            {clickedEdge && (
+              <Fragment>
+                <label className="label">case:</label>
+                <input
+                  value={edgeLabel}
+                  onChange={(evt) => {
+                    setEdgeLabel(evt.target.value);
+                  }}
+                  className="text-input"
+                />
+              </Fragment>
+            )}
           </div>
         </div>
       </ReactFlowProvider>
