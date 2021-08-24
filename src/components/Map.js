@@ -8,11 +8,11 @@ import ReactFlow, {
 } from "react-flow-renderer";
 import ConnectionLine from "./ConnectionLine";
 import Sidebar from "./Sidebar";
-// const edgeType = 'smoothstep';
-import "./dnd.css";
-// import UpdateNode from "./UpdateNode";
-import "./updatenode.css";
 
+import "./dnd.css";
+
+import "./updatenode.css";
+import sprite from "./../assets/sprite.svg";
 const initialElements = [
   {
     id: "1",
@@ -138,8 +138,6 @@ const DnDFlow = () => {
         if (el.id === clickedEdge?.id) {
           console.log("element matcg", el.id, clickedEdge.id);
 
-          // it's important that you create a new object here
-          // in order to notify react flow about the change
           el = {
             ...el,
             label: edgeLabel,
@@ -149,11 +147,66 @@ const DnDFlow = () => {
         return el;
       })
     );
-    // setElements((prevstate) => {
-    //   console.log("the prev stae is", prevstate);
-    //   return []
-    // });
   }, [setElements, clickedEdge, edgeLabel]);
+
+  const deleteNodeHandler = (node) => {
+    setElements((els) => {
+      const filteredArray = els.filter((el) => el.id !== node.id);
+
+      const index = filteredArray.findIndex(
+        (el) => el.target && el.target === node.id
+      );
+      if (index >= 0) {
+        filteredArray.splice(index, 1);
+      }
+      return filteredArray;
+    });
+    setClickedEment({});
+    setLabel("");
+  };
+
+  const deleteEdgeHandler = (edge) => {
+    setElements((els) => {
+      const filteredArray = els.filter((el) => el.id !== edge.id);
+
+      const index = filteredArray.findIndex((el) => el.id === edge.target);
+      if (index >= 0) {
+        filteredArray.splice(index, 1);
+      }
+      return filteredArray;
+    });
+  };
+  const addCaseHandler = () => {
+    const lead = clickedElement;
+    console.log("the lead is", lead);
+    const newNode = {
+      id: `${getId() + "new node"}`,
+      data: { label: "Case:" },
+      // position: { x: 450, y: 200 },
+      position: {
+        x: lead.position.x + getRandomInt(-300, 300),
+        y: lead.position.y + 120,
+      },
+    };
+    const newEdge = {
+      id: `${getId() + "red"}`,
+      source: lead.id,
+      target: newNode.id,
+
+      type: "step",
+      label: "new case",
+      labelStyle: { fill: "red", fontWeight: 700 },
+      style: { stroke: "#101d2c" },
+      arrowHeadColor: "#101d2c",
+      arrowHeadType: "arrowclosed",
+    };
+    setElements((es) => es.concat(newNode, newEdge));
+  };
+  const getRandomInt = (min, max) => {
+    min = Math.ceil(min);
+    max = Math.floor(max);
+    return Math.floor(Math.random() * (max - min) + min);
+  };
 
   return (
     <div className="dndflow">
@@ -162,10 +215,6 @@ const DnDFlow = () => {
 
         <div className="reactflow-wrapper" ref={reactFlowWrapper}>
           <ReactFlow
-            onNodeDoubleClick={(event, node) => {
-              console.log("the node is", node);
-              setElements((els) => els.filter((el) => el.id !== node.id));
-            }}
             onEdgeUpdate={onEdgeUpdate}
             arrowHeadColor="#101d2c"
             defaultZoom={1.5}
@@ -176,36 +225,6 @@ const DnDFlow = () => {
             onDrop={onDrop}
             onEdgeUpdate={onEdgeUpdate}
             onDragOver={onDragOver}
-            onEdgeContextMenu={(event, edge) => {
-              event.preventDefault();
-              console.log(edge);
-              const lead = elements.find((el) => (el.id = edge.source));
-              console.log("the lead is", lead);
-              const newNode = {
-                id: `${getId() + "new node"}`,
-                data: { label: "Case:" },
-                // position: { x: 450, y: 200 },
-                position: {
-                  x: edge.id.includes("red")
-                    ? lead.position.x + 300
-                    : lead.position.x - 300,
-                  y: lead.position.y + 200,
-                },
-              };
-              const newCase = {
-                id: `${getId() + "red"}`,
-                source: edge.source,
-                target: newNode.id,
-
-                type: "step",
-                label: "new case",
-                labelStyle: { fill: "red", fontWeight: 700 },
-                style: { stroke: "#101d2c" },
-                arrowHeadColor: "#101d2c",
-                arrowHeadType: "arrowclosed",
-              };
-              setElements((es) => es.concat(newNode, newCase));
-            }}
             connectionLineType="step"
             connectionLineComponent={ConnectionLine}
             connectionLineStyle={{ stroke: "red" }}
@@ -225,32 +244,85 @@ const DnDFlow = () => {
               setLabel(element.data.label);
             }}
           >
-            {/* <Background variant="dots" gap={10} size={1} /> */}
             <Controls />
           </ReactFlow>
-          {/* <UpdateNode element={clickedElement} setElements={setElements} />
-           */}
+
           <div className="updatenode__controls">
-            <h1 className="update-title">Change label</h1>
-            <label className="label">label:</label>
-            <input
-              value={label}
-              onChange={(evt) => {
-                setLabel(evt.target.value);
-              }}
-              className="text-input"
-            />
-            {clickedEdge && (
+            <h1 className="update-title">Change node</h1>
+            {clickedElement.id && (
               <Fragment>
-                <label className="label">case:</label>
-                <input
-                  value={edgeLabel}
-                  onChange={(evt) => {
-                    setEdgeLabel(evt.target.value);
-                  }}
-                  className="text-input"
-                />
+                <label className="label">label:</label>
+                <div className="input-group">
+                  <input
+                    value={label}
+                    onChange={(evt) => {
+                      setLabel(evt.target.value);
+                    }}
+                    className="text-input"
+                  />
+                  <div
+                    className="input-icon-container"
+                    onClick={() => {
+                      deleteNodeHandler(clickedElement);
+                    }}
+                  >
+                    <svg class="input-icon">
+                      <use href={`${sprite}#icon-cross`}></use>
+                    </svg>
+                  </div>
+                </div>
               </Fragment>
+            )}
+            {elements.map((element) => {
+              if (
+                !clickedElement.target &&
+                element.source === clickedElement.id &&
+                clickedElement.id !== undefined
+              ) {
+                return (
+                  <Fragment>
+                    <div className="label-group">
+                      <label className="label">case:</label>
+                      <div className="input-group">
+                        <input
+                          value={element.label}
+                          onChange={(evt) => {
+                            setElements((elements) =>
+                              elements.map((el) => {
+                                if (el.id === element.id) {
+                                  return {
+                                    ...el,
+                                    label: evt.target.value,
+                                  };
+                                }
+                                return el;
+                              })
+                            );
+                          }}
+                          className="text-input"
+                        />
+                        <div
+                          className="input-icon-container"
+                          onClick={() => {
+                            deleteEdgeHandler(element);
+                          }}
+                        >
+                          <svg class="input-icon">
+                            <use href={`${sprite}#icon-cross`}></use>
+                          </svg>
+                        </div>
+                      </div>
+                    </div>
+                  </Fragment>
+                );
+              }
+            })}
+            {clickedElement.id && (
+              <div className="btn-container" onClick={addCaseHandler}>
+                <a href="#" className="btn">
+                  add case
+                </a>
+              </div>
             )}
           </div>
         </div>
