@@ -1,0 +1,33 @@
+.btn {
+  border: none;
+  border-radius: 10px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.25);
+  text-align: center;
+
+  background-image: linear-gradient(to top left, var(--color-secondary), var(--color-secondary-dark));
+  width: 18rem;
+  padding: .8rem 4rem;
+  display: inline-block;
+cursor: pointer;
+  text-decoration: none;
+  font-size: 1.9rem;
+  color: var(--color-grey-light-1);
+  /* text-transform: uppercase; */
+  transition: all 0.3s;
+  position: relative;
+
+  
+}
+.btn:hover {
+  transform: translateY(-0.3rem);
+  box-shadow: 0 1rem 2rem rgba(0, 0, 0, 0.2);
+}
+.btn:active,
+.btn:focus {
+  transform: translateY(-0.1rem);
+  box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.2);
+}
+.btn--text {
+    font-size: 1.4rem;
+}
+

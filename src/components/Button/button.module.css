@@ -1,0 +1,37 @@
+.btn-container {
+  margin-top: 2rem;
+  margin-bottom: 1rem;
+  position: relative;
+  /* width: 30rem; */
+  background-color: var(--color-secondary);
+  border-radius: 6px;
+  padding: 0.8rem 1.2rem;
+  box-shadow: var(--shadow-dark);
+  position: relative;
+  transition: all 0.3s;
+  cursor: pointer;
+}
+
+.btn,
+.btn:link,
+.btn:visited {
+  text-decoration: none;
+  font-size: 1.5rem;
+
+  color: var(--color-primary-light);
+
+  position: relative;
+  transition: all 0.3s;
+  /* width: 100%; */
+}
+.btn-container:hover,
+.btn-container:link:hover {
+  transform: translateY(-0.3rem);
+  box-shadow: 0 1rem 2rem rgba(0, 0, 0, 0.2);
+}
+
+.btn-container:active,
+.btn-container:focus {
+  transform: translateY(-0.1rem);
+  box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.2);
+}
