@@ -1,4 +1,4 @@
-import DnDFlow from "./components/Map";
+import DnDFlow from "./components/CreateScenario";
 import "./App.css";
 import { Redirect, Route, Switch } from "react-router-dom";
 import Auth from "./pages/Auth/Auth";
@@ -8,6 +8,9 @@ import { useDispatch, useSelector } from "react-redux";
 import { Alert } from "@material-ui/lab";
 import { Fragment, useEffect } from "react";
 import { authenticate } from "./store/actions/auth";
+import Home from "./pages/Home/Home";
+import ScenarioHome from "./pages/Home/ScrenarioHome";
+import EditScenario from "./components/EditScenario";
 
 function App() {
   const auth = useSelector((state) => state.auth);
@@ -31,6 +34,8 @@ function App() {
     const tryLogin = () => {
       const userData = localStorage.getItem("userData");
       const parsedData = JSON.parse(userData);
+      console.log("the data is",parsedData);
+
       if (!userData) {
         console.log("no data found");
 
@@ -53,7 +58,8 @@ function App() {
         );
       }
       const expiryTime = expirationDate.getTime() - new Date().getTime();
-      dispatch(authenticate(user, token, devices, expiryTime));
+      console.log("try auth user",user, token, expiryTime)
+      dispatch(authenticate(user, token, expiryTime));
     };
     tryLogin();
   }, [dispatch]);
@@ -114,11 +120,28 @@ function App() {
                 onClose={closeCardHandler}
               />
             )}
+            <Route path="/home" exact>
+             
+              <Home />
+            </Route>
+            <Route path="/scenario" exact>
+            
+              <ScenarioHome />
+            </Route>
             <Route path="/create-scenario" exact>
-              <DnDFlow />
+              <DnDFlow /> 
+            
+            </Route>
+
+            <Route path="/edit-scenario/:id" exact>
+              <EditScenario /> 
+            
             </Route>
             <Route path="/" exact>
-              <Redirect to="/create-scenario" />
+              <Redirect to="/home" />
+            </Route>
+            <Route path="*" >
+              <Redirect to="/home" />
             </Route>
           </Fragment>
         )}

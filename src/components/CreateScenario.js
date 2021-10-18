@@ -1,4 +1,5 @@
 import React, { useState, useRef, useEffect, Fragment } from "react";
+import { CircularProgress } from "@mui/material";
 import ReactFlow, {
   ReactFlowProvider,
   addEdge,
@@ -8,11 +9,12 @@ import ReactFlow, {
 } from "react-flow-renderer";
 import ConnectionLine from "./ConnectionLine";
 import Sidebar from "./Sidebar";
-
+import { useDispatch } from "react-redux";
 import "./dnd.css";
-
+import { createScenario } from "../store/actions/scenario";
 import "./updatenode.css";
 import sprite from "./../assets/sprite.svg";
+import { useHistory } from "react-router";
 const initialElements = [
   {
     id: "1",
@@ -26,7 +28,11 @@ let id = 0;
 const getId = () => `dndnode_${id++}`;
 
 const DnDFlow = () => {
+  const history = useHistory()
+  const [isSaving, setisSaving] = useState(false);
+  const dispatch = useDispatch();
   const reactFlowWrapper = useRef(null);
+  const [scenarioName, setScenarioName] = useState();
   const [reactFlowInstance, setReactFlowInstance] = useState(null);
   const [elements, setElements] = useState(initialElements);
   const [clickedElement, setClickedEment] = useState({});
@@ -34,6 +40,12 @@ const DnDFlow = () => {
   const [edgeLabel, setEdgeLabel] = useState();
   const [clickedEdge, setclickedEdge] = useState();
   const onConnect = (params) => setElements((els) => addEdge(params, els));
+  const onSaveScenario = async () => {
+    setisSaving(true);
+    await dispatch(createScenario(elements, scenarioName));
+    setisSaving(false);
+    history.push("/scenario")
+  };
   const onElementsRemove = (elementsToRemove) =>
     setElements((els) => removeElements(elementsToRemove, els));
 
@@ -317,11 +329,41 @@ const DnDFlow = () => {
                 );
               }
             })}
+            {elements.length > 2 ? (
+              <input
+                placeholder="scenario name"
+                value={scenarioName}
+                onChange={(evt) => {
+                  setScenarioName(evt.target.value);
+                }}
+                className="text-input"
+              />
+            ) : null}
+
             {clickedElement.id && (
               <div className="btn-container" onClick={addCaseHandler}>
                 <a href="#" className="btn">
                   add case
                 </a>
+                {elements.length > 2 ? (
+                  <Fragment>
+                    {!isSaving ? (
+                      <a
+                        onClick={onSaveScenario}
+                        style={{ marginLeft: "8px" }}
+                        href="#"
+                        className="btn"
+                      >
+                        save scenario
+                      </a>
+                    ) : (
+                      <CircularProgress
+                        color="success"
+                        style={{ marginLeft: "25px", marginTop: "10px" }}
+                      />
+                    )}
+                  </Fragment>
+                ) : null}
               </div>
             )}
           </div>

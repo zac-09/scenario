@@ -136,6 +136,8 @@
 }
 .input__container{
     width: 90%;
+    display:flex;
+    flex-direction:column;
 }
 .spinner__container{
     margin-top: 2rem;
