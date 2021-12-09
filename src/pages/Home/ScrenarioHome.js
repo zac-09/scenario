@@ -161,20 +161,26 @@ const ScenarioHome = (props) => {
             columns={columns}
             data={scenarios}
             selectableRows
+            selectableRowsSingle={true}
             customStyles={customStyles}
             pagination={true}
             highlightOnHover={true}
             // clearSelectedRows={clearSelectedRows}
-            expandableRows
+            // expandableRows
             // onRowClicked={(data) => {
             //   console.log("clicked");
             //   setScenarioID(data);
             // }}
+            highlightOnHover={true}
             keyField="device_imei"
             noDataComponent="no scenarios found "
             onSelectedRowsChange={(data) => {
-              console.log("clicked", data.selectedRows[0].id);
-              setScenarioID(data.selectedRows[0].id);
+              // console.log("clicked", data.selectedRows[0].id);
+              if (data.selectedRows) {
+                if (data.selectedRows.length > 0) {
+                  setScenarioID(data.selectedRows[0].id);
+                }
+              }
             }}
           />
         </div>

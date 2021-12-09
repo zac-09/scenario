@@ -33,6 +33,15 @@
   color: var(--color-secondary) !important;
   /* margin-top: 200px !important; */
 }
+.btn--green {
+  background-color: green!important;
+  color: #ccc !important;
+  transition: all .3s;
+  /* margin-top: 200px !important; */
+}
+.btn--green:hover{
+    transform: translateY(4px);
+}
 
 .btn-yellow-link {
   text-decoration: none;

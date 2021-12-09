@@ -41,10 +41,14 @@ const EditScenario = (props) => {
   const [clickedEdge, setclickedEdge] = useState();
   const onConnect = (params) => setElements((els) => addEdge(params, els));
   const onEditScenario = async () => {
-    setisSaving(true);
-    await dispatch(updateScenario(elements, scenarioName, params.id));
-    setisSaving(false);
-    history.push("/scenario");
+    try {
+      setisSaving(true);
+      await dispatch(updateScenario(elements, scenarioName, params.id));
+      setisSaving(false);
+      history.push("/scenario");
+    } catch (err) {
+      setisSaving(false);
+    }
   };
   const onElementsRemove = (elementsToRemove) =>
     setElements((els) => removeElements(elementsToRemove, els));
@@ -234,7 +238,13 @@ const EditScenario = (props) => {
       {newElements.length > 1 && (
         <div className="dndflow">
           <ReactFlowProvider>
-            <Sidebar />
+            <Sidebar
+              isSaving={isSaving}
+              onSaveScenario={onEditScenario}
+              scenarioName={scenarioName}
+              setScenarioName={setScenarioName}
+              isEdit={true}
+            />
 
             <div className="reactflow-wrapper" ref={reactFlowWrapper}>
               <ReactFlow
@@ -340,40 +350,12 @@ const EditScenario = (props) => {
                     );
                   }
                 })}
-                {elements.length > 2 ? (
-                  <input
-                    value={scenarioName}
-                    onChange={(evt) => {
-                      setScenarioName(evt.target.value);
-                    }}
-                    className="text-input"
-                  />
-                ) : null}
 
                 {clickedElement.id && (
                   <div className="btn-container" onClick={addCaseHandler}>
                     <a href="#" className="btn">
                       add case
                     </a>
-                    {elements.length > 2 ? (
-                      <Fragment>
-                        {!isSaving ? (
-                          <a
-                            onClick={onEditScenario}
-                            style={{ marginLeft: "8px" }}
-                            href="#"
-                            className="btn"
-                          >
-                            update scenario
-                          </a>
-                        ) : (
-                          <CircularProgress
-                            color="success"
-                            style={{ marginLeft: "25px", marginTop: "10px" }}
-                          />
-                        )}
-                      </Fragment>
-                    ) : null}
                   </div>
                 )}
               </div>

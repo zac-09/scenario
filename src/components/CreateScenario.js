@@ -15,6 +15,7 @@ import { createScenario } from "../store/actions/scenario";
 import "./updatenode.css";
 import sprite from "./../assets/sprite.svg";
 import { useHistory } from "react-router";
+import { notificationActions } from "../store";
 const initialElements = [
   {
     id: "1",
@@ -28,7 +29,7 @@ let id = 0;
 const getId = () => `dndnode_${id++}`;
 
 const DnDFlow = () => {
-  const history = useHistory()
+  const history = useHistory();
   const [isSaving, setisSaving] = useState(false);
   const dispatch = useDispatch();
   const reactFlowWrapper = useRef(null);
@@ -40,11 +41,26 @@ const DnDFlow = () => {
   const [edgeLabel, setEdgeLabel] = useState();
   const [clickedEdge, setclickedEdge] = useState();
   const onConnect = (params) => setElements((els) => addEdge(params, els));
-  const onSaveScenario = async () => {
-    setisSaving(true);
-    await dispatch(createScenario(elements, scenarioName));
-    setisSaving(false);
-    history.push("/scenario")
+  const onSaveScenario = async (e) => {
+    e.preventDefault();
+    if (elements.length > 2) {
+      try {
+        setisSaving(true);
+        await dispatch(createScenario(elements, scenarioName));
+        setisSaving(false);
+        history.push("/scenario");
+      } catch (err) {
+        setisSaving(false);
+      }
+    } else {
+      dispatch(
+        notificationActions.showAlert({
+          type: "error",
+          message: "please create a node",
+        })
+      );
+      return;
+    }
   };
   const onElementsRemove = (elementsToRemove) =>
     setElements((els) => removeElements(elementsToRemove, els));
@@ -223,7 +239,12 @@ const DnDFlow = () => {
   return (
     <div className="dndflow">
       <ReactFlowProvider>
-        <Sidebar />
+        <Sidebar
+          isSaving={isSaving}
+          onSaveScenario={onSaveScenario}
+          scenarioName={scenarioName}
+          setScenarioName={setScenarioName}
+        />
 
         <div className="reactflow-wrapper" ref={reactFlowWrapper}>
           <ReactFlow
@@ -329,7 +350,7 @@ const DnDFlow = () => {
                 );
               }
             })}
-            {elements.length > 2 ? (
+            {/* {elements.length > 2 ? (
               <input
                 placeholder="scenario name"
                 value={scenarioName}
@@ -338,14 +359,14 @@ const DnDFlow = () => {
                 }}
                 className="text-input"
               />
-            ) : null}
+            ) : null} */}
 
             {clickedElement.id && (
               <div className="btn-container" onClick={addCaseHandler}>
                 <a href="#" className="btn">
                   add case
                 </a>
-                {elements.length > 2 ? (
+                {/* {elements.length > 2 ? (
                   <Fragment>
                     {!isSaving ? (
                       <a
@@ -363,7 +384,7 @@ const DnDFlow = () => {
                       />
                     )}
                   </Fragment>
-                ) : null}
+                ) : null} */}
               </div>
             )}
           </div>

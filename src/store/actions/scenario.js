@@ -26,8 +26,8 @@ export const createScenario = (scenarioData, name) => {
       dispatch(
         notificationActions.showAlert({ type: "error", message: error.message })
       );
-      return;
-      // throw new Error(error.message);
+      // return;
+      throw new Error(error.message);
     }
     const data = await response.json();
     console.log("data from action", data);
@@ -60,8 +60,8 @@ export const updateScenario = (scenarioData, name, id) => {
       dispatch(
         notificationActions.showAlert({ type: "error", message: error.message })
       );
-      return;
-      // throw new Error(error.message);
+      // return;
+      throw new Error(error.message);
     }
     const data = await response.json();
   
