@@ -106,6 +106,19 @@ const ScenarioHome = (props) => {
             <li className={styles["list-item"]}>
               <NavLink
                 activeClassName={styles["nav-item--active"]}
+                to="/canvas"
+                className={styles["nav-item"]}
+         
+              >
+                <svg className={styles["list-icon"]}>
+                  <use href={`${sprite}#icon-puzzle-piece`}></use>
+                </svg>
+                <span className={styles["list-title"]}>Canvas</span>
+              </NavLink>
+            </li>
+            <li className={styles["list-item"]}>
+              <NavLink
+                activeClassName={styles["nav-item--active"]}
                 className={styles["nav-item"]}
                 to="/home"
                 href="#"
