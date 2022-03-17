@@ -126,6 +126,36 @@ export const getAllScenarios = () => {
     dispatch(scenarioActions.load({ scenarios }));
   };
 };
+
+//get canvas scenarios
+export const getAllCanvasScenarios = () => {
+  return async (dispatch, getState) => {
+    const state = getState();
+    const token = state.auth.token;
+    const response = await fetch(`${url}/scenarios/userCanvasScenarios`, {
+      method: "GET",
+
+      headers: {
+        "Content-type": "application/json",
+        Authorization: "Bearer " + token,
+      },
+    });
+    if (!response.ok) {
+      const error = await response.json();
+      //   console.log(error.message);
+      dispatch(
+        notificationActions.showAlert({ type: "error", message: error.message })
+      );
+      return;
+      // throw new Error(error.message);
+    }
+    const data = await response.json();
+    console.log("data from action", data);
+    const canvasScenarios = data.canvasScenarios;
+    dispatch(scenarioActions.loadCanvasScenarios({ canvasScenarios }));
+  };
+};
+
 export const getScenario = (id) => {
   return async (dispatch, getState) => {
     const state = getState();

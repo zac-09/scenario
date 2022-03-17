@@ -12,6 +12,7 @@ import Home from "./pages/Home/Home";
 import ScenarioHome from "./pages/Home/ScrenarioHome";
 import EditScenario from "./components/EditScenario";
 import Canvas from "./components/Canvas/Canvas";
+import CanvasList from "./components/Canvas/CanvasList";
 
 function App() {
   const auth = useSelector((state) => state.auth);
@@ -133,6 +134,10 @@ function App() {
             
               <Canvas />
             </Route>
+            <Route path="/canvasScenarios" exact>
+            
+            <CanvasList />
+          </Route>
             <Route path="/create-scenario" exact>
               <DnDFlow /> 
             

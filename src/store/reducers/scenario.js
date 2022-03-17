@@ -2,6 +2,7 @@ import { createSlice } from "@reduxjs/toolkit";
 
 const intialState = {
   scenarios: [],
+  canvasScenarios: {},
   editedScenario:[],
   editedScenarioName:""
 };
@@ -12,6 +13,9 @@ const scenarioSlice = createSlice({
   reducers: {
     load(state, action) {
       state.scenarios = action.payload.scenarios;
+    },
+    loadCanvasScenarios(state, action) {
+      state.canvasScenarios = action.payload.canvasScenarios;
     },
     setEditedScenario(state, action) {
       state.editedScenario = action.payload.data;
