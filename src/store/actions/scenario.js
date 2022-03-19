@@ -74,6 +74,42 @@ export const updateScenario = (scenarioData, name, id) => {
   };
 };
 
+//update canvas scenario
+export const updateCanvasScenario = (scenarioData, name, id) => {
+  return async (dispatch, getState) => {
+    const state = getState();
+    const token = state.auth.token;
+    const response = await fetch(`${url}/scenarios/canvas/${id}`, {
+      method: "PATCH",
+      body: JSON.stringify({
+        data: scenarioData,
+        name,
+      }),
+      headers: {
+        "Content-type": "application/json",
+        Authorization: "Bearer " + token,
+      },
+    });
+    if (!response.ok) {
+      const error = await response.json();
+      //   console.log(error.message);
+      dispatch(
+        notificationActions.showAlert({ type: "error", message: error.message })
+      );
+      // return;
+      throw new Error(error.message);
+    }
+    const data = await response.json();
+  
+    await dispatch(
+      notificationActions.showAlert({
+        type: "success",
+        message: "scenario successfully updated",
+      })
+    );
+  };
+};
+
 export const deleteScenario = (id) => {
   return async (dispatch, getState) => {
     const state = getState();
@@ -189,3 +225,40 @@ export const getScenario = (id) => {
 
   };
 };
+
+//get single canvas scenario
+export const getCanvasScenario = (id) => {
+  return async (dispatch, getState) => {
+    const state = getState();
+    const token = state.auth.token;
+    const response = await fetch(`${url}/scenarios/canvas/${id}`, {
+      method: "GET",
+
+      headers: {
+        "Content-type": "application/json",
+        Authorization: "Bearer " + token,
+      },
+    });
+    console.log('canvas action hit')
+    if (!response.ok) {
+      const error = await response.json();
+        console.log(error.message);
+      dispatch(
+        notificationActions.showAlert({ type: "error", message: error.message })
+      );
+      return;
+      // throw new Error(error.message);
+    }
+    const data = await response.json();
+    console.log("data from fetch one canvas", data);
+    const scenario = data.scenario.data;
+  await  dispatch(
+      scenarioActions.setEditedCanvasScenario({
+        data: scenario,
+        name: data.scenario.name,
+      })
+    );
+
+  };
+};
+

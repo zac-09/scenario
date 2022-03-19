@@ -8,7 +8,7 @@ import moment from "moment";
 import { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useHistory } from "react-router";
-import { getAllCanvasScenarios, getScenario } from "../../store/actions/scenario";
+import { getAllCanvasScenarios, getCanvasScenario } from "../../store/actions/scenario";
 import { notificationActions } from "../../store";
 const customStyles = {
   headCells: {
@@ -154,10 +154,10 @@ const CanvasList = (props) => {
                   );
                   return;
                 }
-                await dispatch(getScenario(scenarioID));
+                await dispatch(getCanvasScenario(scenarioID));
 
                 setTimeout(() => {
-                  history.push(`/edit-scenario/${scenarioID}`);
+                  history.push(`/edit-canvasScenario/${scenarioID}`);
                 }, 100);
               }}
               // to={`/edit-scenario/616d89c87785e70fb85e2b30`}

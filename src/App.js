@@ -13,6 +13,7 @@ import ScenarioHome from "./pages/Home/ScrenarioHome";
 import EditScenario from "./components/EditScenario";
 import Canvas from "./components/Canvas/Canvas";
 import CanvasList from "./components/Canvas/CanvasList";
+import EditCanvas from "./components/Canvas/EditCanvas";
 
 function App() {
   const auth = useSelector((state) => state.auth);
@@ -147,6 +148,12 @@ function App() {
               <EditScenario /> 
             
             </Route>
+
+            <Route path="/edit-canvasScenario/:id" exact>
+              <EditCanvas /> 
+            
+            </Route>
+
             <Route path="/" exact>
               <Redirect to="/home" />
             </Route>
