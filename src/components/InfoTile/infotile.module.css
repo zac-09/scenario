@@ -12,7 +12,7 @@
   color: var(--color-grey-light-3);
 }
 .card:hover{
-    transform:translateY(-1.5rem)
+    transform:translateY(-.5rem)
 }
 .icon-container {
   grid-row: 1/3;

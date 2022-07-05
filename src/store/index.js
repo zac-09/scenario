@@ -10,10 +10,10 @@ const store = configureStore({
     scenario: scenarioSlice.reducer,
   },
 });
-// export const url = "http://localhost:3000/api/v1";
+//export const url = "http://localhost:4000/api/v1";
 // export const socketUrl = "http://localhost:3000";
 
-export const url = "https://api-dnd.herokuapp.com/api/v1";
+export const url = "https://scenario-api.herokuapp.com/api/v1";
 
 
 export const authActions = authSlice.actions;

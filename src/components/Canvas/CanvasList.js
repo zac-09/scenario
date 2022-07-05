@@ -8,7 +8,7 @@ import moment from "moment";
 import { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useHistory } from "react-router";
-import { getAllScenarios, getScenario } from "../../store/actions/scenario";
+import { getAllCanvasScenarios, getCanvasScenario } from "../../store/actions/scenario";
 import { notificationActions } from "../../store";
 const customStyles = {
   headCells: {
@@ -55,20 +55,20 @@ const columns = [
   },
 ];
 
-const ScenarioHome = (props) => {
+const CanvasList = (props) => {
   const [isRowSelected, setIsRowSelected] = useState(false);
   const [clearSelectedRows, setClearSelectedRows] = useState(false);
   const [scenarioID, setScenarioID] = useState(null);
   const dispatch = useDispatch();
   const history = useHistory();
-  const scenarios = useSelector((state) => state.scenario.scenarios);
+  const scenarios = useSelector((state) => state.scenario.canvasScenarios);
   // const scenarios = [
   //   { scenario_name: "12", createdAt: new Date(), id: "fdffdsfds" },
   //   { scenario_name: "testing", createdAt: new Date(), id: "25" },
   // ];
   // const [scenarios, setScenarios] = useState([]);
   useEffect(() => {
-    dispatch(getAllScenarios());
+    dispatch(getAllCanvasScenarios());
   }, []);
   return (
     <div className={styles["container"]}>
@@ -154,10 +154,10 @@ const ScenarioHome = (props) => {
                   );
                   return;
                 }
-                await dispatch(getScenario(scenarioID));
+                await dispatch(getCanvasScenario(scenarioID));
 
                 setTimeout(() => {
-                  history.push(`/edit-scenario/${scenarioID}`);
+                  history.push(`/edit-canvasScenario/${scenarioID}`);
                 }, 100);
               }}
               // to={`/edit-scenario/616d89c87785e70fb85e2b30`}
@@ -202,4 +202,4 @@ const ScenarioHome = (props) => {
   );
 };
 
-export default ScenarioHome;
+export default CanvasList;

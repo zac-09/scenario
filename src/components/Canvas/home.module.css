@@ -1,0 +1,119 @@
+.container {
+  display: grid;
+  grid-template-columns: 19rem 1fr;
+}
+.sidebar {
+  background-color: var(--color-secondary);
+  min-height: 100vh;
+
+  width: 100%;
+  overflow: hidden;
+}
+.content {
+  background-color: var(--color-grey-light-3);
+  min-height: 100vh;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+}
+.title-container {
+  font-size: 1.9rem;
+  margin-top: 3rem;
+}
+
+.title {
+  color: var(--color-primary);
+}
+.list-icon {
+  height: 1.7rem;
+  width: 1.7rem;
+  fill: var(--color-primary);
+  z-index:10000;
+  padding: 1.2rem;
+
+}
+.list-title {
+  list-style: none;
+  text-decoration: none;
+  color: var(--color-primary);
+  font-size: 1.8rem;
+  margin-left: 1rem;
+  z-index:10000;
+
+}
+.nav-item{
+  list-style: none;
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  margin-top: 2rem;
+  margin-left: 1.5rem;
+  position: relative;
+  z-index:10000;
+
+}
+.list-item {
+  list-style: none;
+  text-decoration: none;
+  display: flex;
+  /* justify-content: center; */
+  align-items: center;
+  margin-top: 2rem;
+  margin-left: 1.5rem;
+  
+  position: relative;
+  z-index: 25;
+  /* padding: 1.4rem; */
+}
+.item- .list {
+  list-style: none;
+}
+.list-container {
+  margin-top: 4rem;
+}
+.tiles-container {
+  display: flex;
+}
+.tile-blue {
+  background-color: #303f9f;
+}
+.tile-teal {
+  background-color: #009688;
+}
+.tile-pink {
+  background-color: #c2185b;
+}
+
+.nav-item::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 110%;
+  width: 1px;
+padding: .5rem;
+  background-image: linear-gradient(to right, #5accf0, #25bcf3, #a2e7ec);
+  transform: scaleY(0);
+  transition: transform 0.3s, width 0.3s cubic-bezier(1, 0, 0, 1) 0.2s,
+    background-color 0.1s;
+  z-index: 0;
+
+   border-top-left-radius: 40rem; 
+  /* border-top-right-radius: 100rem; */
+
+  border-bottom-left-radius: 40rem; 
+}
+
+.nav-item:hover::before {
+  transform: scaleY(1);
+  width: 300%;
+ 
+}
+.nav-item--active::before {
+  transform: scaleY(1);
+  width: 300%;
+}
+.btn-yellow{
+  background-color: var(--color-primary) !important;
+  color: var(--color-secondary);
+}

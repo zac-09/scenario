@@ -41,6 +41,34 @@ const Home = (props) => {
             </li>
             <li className={styles["list-item"]}>
               <NavLink
+                activeClassName={styles["nav-item--active"]}
+                to="/canvas"
+                className={styles["nav-item"]}
+         
+              >
+                <svg className={styles["list-icon"]}>
+                  <use href={`${sprite}#icon-puzzle-piece`}></use>
+                </svg>
+                <span className={styles["list-title"]}>Create canvas</span>
+              </NavLink>
+            </li>
+
+            <li className={styles["list-item"]}>
+              <NavLink
+                activeClassName={styles["nav-item--active"]}
+                to="/canvasScenarios"
+                className={styles["nav-item"]}
+         
+              >
+                <svg className={styles["list-icon"]}>
+                  <use href={`${sprite}#icon-puzzle-piece`}></use>
+                </svg>
+                <span className={styles["list-title"]}>Canvas scenarios</span>
+              </NavLink>
+            </li>
+
+            <li className={styles["list-item"]}>
+              <NavLink
                 activeClassName={styles["nav-item--active"]} 
                 className={styles["nav-item"]}
                 to="/test"
