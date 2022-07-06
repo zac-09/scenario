@@ -49,6 +49,7 @@ const Auth = (props) => {
   } = useInput(validateName);
   const [loading, setIsLoading] = useState(false);
   const [isSignup, setIsSignup] = useState(false);
+  const [isForgotPassword, setIsForgotPassword] = useState(false);
   const dispatch = useDispatch();
   const history = useHistory();
   const onSignIn = async (event) => {
@@ -124,7 +125,7 @@ const Auth = (props) => {
                 <span className={styles["signup"]}>Sign Up</span>
               </div>
             </div>
-            {isSignup && (
+            {isSignup && !isForgotPassword && (
               <form onSubmit={onSignUp} className={styles["form"]}>
                 <div className={styles["input__group"]}>
                   <div className={styles["input__container"]}>
@@ -259,7 +260,52 @@ const Auth = (props) => {
                   //   // type="submit"
 
                   // />
-                  <FormButton style={styles["btn"]} title="sign in" />
+                  <div>
+                    <FormButton style={styles["btn"]} title="sign in" />
+                    <a href="#" onClick={() => setIsForgotPassword(true)}>
+                      Forgot password
+                    </a>
+                  </div>
+                )}
+                {loading && (
+                  <div className={styles["spinner__container"]}>
+                    <LoadingSpinner />
+                  </div>
+                )}
+              </form>
+            )}
+            {isForgotPassword && (
+              <form action="" className={styles["form"]} onSubmit={onSignIn}>
+                <div className={styles["input__group"]}>
+                  <div className={styles["input__container"]}>
+                    <input
+                      type="email"
+                      className={styles["input"]}
+                      placeholder="Email"
+                      required
+                      value={emailValue}
+                      onChange={emailValueChangeHandler}
+                      onBlur={emailInputBlurHandler}
+                    />
+                    {emailHasError && (
+                      <span className={styles["error"]}>
+                        Please enter your email address to recieve a password
+                        reset link
+                      </span>
+                    )}
+                  </div>
+                </div>
+                {!loading && (
+                  // <Button
+                  //   style={styles["btn"]}
+                  //   label={isSignup ? "sign up" : "sign in"}
+                  //   onClick={onSignIn}
+                  //   // type="submit"
+
+                  // />
+                  <div>
+                    <FormButton style={styles["btn"]} title="Send reset link" />
+                  </div>
                 )}
                 {loading && (
                   <div className={styles["spinner__container"]}>
