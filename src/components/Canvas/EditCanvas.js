@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react'
 import Sidebar from '../Sidebar'
-import './Canvas.css'
+import styles from'./canvas.module.css'
 import CanvasDraw from "react-canvas-draw";
 import { useSelector, useDispatch } from 'react-redux'
 import { useHistory, useParams } from "react-router";

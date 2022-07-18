@@ -14,6 +14,8 @@ import EditScenario from "./components/EditScenario";
 import Canvas from "./components/Canvas/Canvas";
 import CanvasList from "./components/Canvas/CanvasList";
 import EditCanvas from "./components/Canvas/EditCanvas";
+import Sidebar from "./components/Sidebar/Sidebar";
+import Header from "./components/Header/Header";
 
 function App() {
   const auth = useSelector((state) => state.auth);
@@ -103,6 +105,12 @@ function App() {
           </Fragment>
         )}
         {isLoggedIn && (
+          <div className="container">
+            <div>
+          <Sidebar />
+          </div>
+          <div className="content_div">
+            <Header />
           <Fragment>
             {notification.showAlert && (
               <Alert
@@ -161,6 +169,8 @@ function App() {
               <Redirect to="/home" />
             </Route>
           </Fragment>
+          </div>
+          </div>
         )}
       </Switch>
     </div>
