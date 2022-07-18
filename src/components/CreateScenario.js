@@ -239,12 +239,13 @@ const DnDFlow = () => {
   return (
     <div className="dndflow">
       <ReactFlowProvider>
-        <Sidebar
+        {/* <Sidebar
           isSaving={isSaving}
           onSaveScenario={onSaveScenario}
           scenarioName={scenarioName}
           setScenarioName={setScenarioName}
-        />
+        /> */}
+        
 
         <div className="reactflow-wrapper" ref={reactFlowWrapper}>
           <ReactFlow

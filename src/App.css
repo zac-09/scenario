@@ -58,3 +58,11 @@
     margin: 0 auto;
   
 }
+
+.container{
+  display: flex;
+}
+
+.content_div{
+  flex: 1;
+}
