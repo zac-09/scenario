@@ -5,38 +5,37 @@ import CanvasDraw from "react-canvas-draw";
 import { useSelector, useDispatch } from "react-redux";
 import { SketchPicker } from "react-color";
 import Slider from "react-input-slider";
+import { url } from "../../store/index";
 
 function Canvas() {
   const [color, setColor] = useState("red");
   const [canvasData, setCanvasData] = useState();
   const [name, setName] = useState("");
-  const [brushRadius, setBrushRadius] = useState({x: 2});
+  const [brushRadius, setBrushRadius] = useState({ x: 2 });
 
   const token = useSelector((state) => state.auth.token);
 
   let saveableCanvas = useRef(null);
 
   const saveCanvas = async () => {
-    const response = await fetch(
-      `http://localhost:4000/api/v1/scenarios/saveCanvasScenario`,
-      {
-        method: "POST",
-        body: JSON.stringify({
-          data: canvasData,
-          name: name,
-        }),
-        headers: {
-          "Content-type": "application/json",
-          Authorization: "Bearer " + token,
-        },
-      }
-    );
+    const response = await fetch(`${url}/scenarios/saveCanvasScenario`, {
+      method: "POST",
+      body: JSON.stringify({
+        data: canvasData,
+        name: name,
+      }),
+      headers: {
+        "Content-type": "application/json",
+        Authorization: "Bearer " + token,
+      },
+    });
     if (!response.ok) {
       const error = await response.json();
       console.log(error.message);
+    } else {
+      const data = await response.json();
+      console.log("data from action", data);
     }
-    const data = await response.json();
-    console.log("data from action", data);
   };
 
   return (
@@ -58,14 +57,14 @@ function Canvas() {
             onChangeComplete={(color) => setColor(color.hex)}
           />
         </div>
-        <p>{'x: ' + brushRadius.x}</p>
+        <p>{"x: " + brushRadius.x}</p>
         <Slider
-               axis="x"
-               xstep={0.1}
-               xmin={0}
-               xmax={10}
-               x={brushRadius.x}
-               onChange={({ x }) => setBrushRadius({ x: parseFloat(x.toFixed(2)) })}
+          axis="x"
+          xstep={0.1}
+          xmin={0}
+          xmax={10}
+          x={brushRadius.x}
+          onChange={({ x }) => setBrushRadius({ x: parseFloat(x.toFixed(2)) })}
         />
         <br />
         <input
