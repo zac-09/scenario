@@ -40,9 +40,7 @@ function Canvas() {
 
   return (
     <div className={styles["container"]}>
-      <div>
-        <Sidebar />
-      </div>
+
       <div>
         <div className={styles["canvas_content"]}>
           <CanvasDraw
