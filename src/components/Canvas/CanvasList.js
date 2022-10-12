@@ -75,7 +75,7 @@ const CanvasList = (props) => {
 
       <div className={styles["content"]}>
         <div
-          style={{ margin: "10px", display: "flex", flexDirection: "column" }}
+          // style={{ margin: "10px", display: "flex", flexDirection: "column" }}
         >
           <div style={{ margin: "10px" }}>
             <Link to="/create-scenario">
