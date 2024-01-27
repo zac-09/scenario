@@ -1,107 +1,48 @@
 import Header from "../../components/Header/Header";
 import styles from "./home.module.css";
-import { NavLink } from "react-router-dom";
-import sprite from "./../../assets/sprite.svg";
+
 import InfoTile from "../../components/InfoTile/InfoTile";
+import Sidebar from "../../components/Sidebar/Sidebar";
+import { useEffect, useState } from "react";
 
 const Home = (props) => {
+  const [randomDigits, setRandomDigits] = useState({ totalScenarios: 0, testedScenarios: 0, completedScenarios: 0 });
+
+  useEffect(() => {
+    let randomDigitsInterval;
+    randomDigitsInterval = setInterval(() => {
+      setRandomDigits((prev) => ({
+        ...prev,
+        totalScenarios: prev.totalScenarios + Math.ceil(Math.random() * 10),
+        testedScenarios: prev.testedScenarios + Math.ceil(Math.random() * 5),
+        completedScenarios: prev.completedScenarios + Math.ceil(Math.random() * 2)
+      }));
+    }, 2000);
+
+    // Clear the interval when the component is unmounted
+    return () => clearInterval(randomDigitsInterval);
+  }, []);
+
   return (
     <div className={styles["container"]}>
-      <div className={styles["sidebar"]}>
-        <div className={styles["title-container"]}>
-          <span className={styles["title"]}>Scenario creator</span>
-        </div>
-        <div className={styles["list-container"]}>
-          <ul className={styles["list"]}>
-            <li className={styles["list-item"]}>
-              <NavLink
-                activeClassName={styles["nav-item--active"]}
-                className={styles["nav-item"]}
-                to="/home"
-                href="#"
-              >
-                <svg className={styles["list-icon"]}>
-                  <use href={`${sprite}#icon-dashboard`}></use>
-                </svg>
-                <span className={styles["list-title"]}>Dashboard</span>
-              </NavLink>
-            </li>
-            <li className={styles["list-item"]}>
-              <NavLink
-                activeClassName={styles["nav-item--active"]}
-                to="/scenario"
-                className={styles["nav-item"]}
-         
-              >
-                <svg className={styles["list-icon"]}>
-                  <use href={`${sprite}#icon-puzzle-piece`}></use>
-                </svg>
-                <span className={styles["list-title"]}>scenarios</span>
-              </NavLink>
-            </li>
-            <li className={styles["list-item"]}>
-              <NavLink
-                activeClassName={styles["nav-item--active"]}
-                to="/canvas"
-                className={styles["nav-item"]}
-         
-              >
-                <svg className={styles["list-icon"]}>
-                  <use href={`${sprite}#icon-puzzle-piece`}></use>
-                </svg>
-                <span className={styles["list-title"]}>Create canvas</span>
-              </NavLink>
-            </li>
-
-            <li className={styles["list-item"]}>
-              <NavLink
-                activeClassName={styles["nav-item--active"]}
-                to="/canvasScenarios"
-                className={styles["nav-item"]}
-         
-              >
-                <svg className={styles["list-icon"]}>
-                  <use href={`${sprite}#icon-puzzle-piece`}></use>
-                </svg>
-                <span className={styles["list-title"]}>Canvas scenarios</span>
-              </NavLink>
-            </li>
-
-            <li className={styles["list-item"]}>
-              <NavLink
-                activeClassName={styles["nav-item--active"]} 
-                className={styles["nav-item"]}
-                to="/test"
-                href="#"
-              >
-                <svg className={styles["list-icon"]}>
-                  <use href={`${sprite}#icon-lab`}></use>
-                </svg>
-                <span className={styles["list-title"]}>Test</span>
-              </NavLink>
-            </li>
-          </ul>
-        </div>
-      </div>
       <div className={styles["content"]}>
-        <Header />
         <div className={styles["tiles-container"]}>
           <InfoTile
             style={styles["tile-blue"]}
             text="total scenarios"
-            figure="20"
+            figure={randomDigits.totalScenarios}
             icon="puzzle-piece"
           />
           <InfoTile
             style={styles["tile-teal"]}
             text="tested scenarios"
-            figure="15"
+            figure={randomDigits.testedScenarios}
             icon="lab"
           />
           <InfoTile
             style={styles["tile-pink"]}
             text="completed scenarios"
-            figure="5"
+            figure={randomDigits.completedScenarios}
             icon="checkmark2"
           />
         </div>
